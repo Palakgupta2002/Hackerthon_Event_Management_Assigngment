@@ -8,6 +8,7 @@ const hackerthonSchema=new Schema({
     },
     organizerEmail:{
         type:String,
+        required:true
     },
     company:{
         type:String,
