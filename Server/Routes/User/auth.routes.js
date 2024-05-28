@@ -5,7 +5,6 @@ import User from '../../Modals/auth.js';
 
 const router = express.Router();
 
-// Secret key for JWT (store this securely)
 const JWT_SECRET = 'your_jwt_secret';
 
 const registration = async (req, res) => {
@@ -32,8 +31,8 @@ const registration = async (req, res) => {
         const savedUser = await newUser.save();
         res.status(201).json({ message: 'User created successfully', user: savedUser });
     } catch (error) {
-        console.error('Error creating user:', error);
-        res.status(500).json({ error: 'Error creating user' });
+        console.error("it seems like user already exist with same credentials");
+        res.json({ error: 'it seems like user already exist with same credentials' });
     }
 };
 
@@ -55,7 +54,7 @@ const login = async (req, res) => {
             expiresIn: '1h',
         });
 
-        res.json({ token });
+        res.json({ token,user });
     } catch (error) {
         console.error('Error logging in:', error.message);
         res.status(500).json({ message: 'Internal server error' });

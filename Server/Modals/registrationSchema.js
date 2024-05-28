@@ -1,14 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
 const registrationSchema=new Schema({
-    hackerthon:{
-        type:Schema.Types.ObjectId,
-        ref:"hackerthonSchema",
+    hackerthonId:{
+        type:String,
         required:true
     },
-    participant:{ 
-        type: Schema.Types.ObjectId, 
-        ref: 'User', 
+    participantEmail:{ 
+        type: String, 
         required: true 
     },
     name:{ 
