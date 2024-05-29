@@ -5,13 +5,13 @@ import hackerthon from "./Routes/Hackerthon/Hackerthon.routes.js"
 import registrationform from "./Routes/Hackerthon/RegistrationForm.routes.js"
 import bodyParser from "body-parser"
 import dotenv from 'dotenv';
+import cors from "cors"
 dotenv.config();
 
 
 mongoose.connect(process.env.Mongo_URL)
 .then(() => console.log("MongoDB is connected"))
 .catch(err => console.log(err));
-import cors from "cors"
 
 const app = express();
 app.use(cors())
