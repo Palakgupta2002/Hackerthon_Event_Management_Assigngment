@@ -4,9 +4,11 @@ import userRoutes from "./Routes/User/auth.routes.js";
 import hackerthon from "./Routes/Hackerthon/Hackerthon.routes.js"
 import registrationform from "./Routes/Hackerthon/RegistrationForm.routes.js"
 import bodyParser from "body-parser"
+import dotenv from 'dotenv';
+dotenv.config();
 
 
-mongoose.connect('mongodb+srv://shanvig819:palak@cluster7.qp4t2z6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster7')
+mongoose.connect(process.env.Mongo_URL)
 .then(() => console.log("MongoDB is connected"))
 .catch(err => console.log(err));
 import cors from "cors"
