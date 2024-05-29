@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from './Navbar';
 import CreateForm from './CreateForm';
+import { Button, Modal } from "flowbite-react";
+import RegistrationForm from './RegistrationForm';
 
 const HomePage = () => {
-  const { role, email } = useParams(); 
+  const { role, email } = useParams();
   const [hackerthonData, setHackerthonData] = useState([]);
+  const [openModal, setOpenModal] = useState(true);
 
   const fetchHackerthonData = async () => {
     try {
@@ -13,7 +16,7 @@ const HomePage = () => {
       if (role === 'organizer') {
         response = await fetch(`http://localhost:5000/hackerthon/getEmailHackerThon/${email}`);
       } else {
-      
+
         response = await fetch("http://localhost:5000/hackerthon/getAllHackerthons");
       }
 
@@ -31,7 +34,7 @@ const HomePage = () => {
   useEffect(() => {
     fetchHackerthonData();
   }, [role, email]);
-  console.log(hackerthonData,"hello")
+  console.log(hackerthonData, "hello")
 
   return (
     <div>
@@ -56,7 +59,20 @@ const HomePage = () => {
               <div className="mt-2">
                 <span className="text-gray-700">{ele.date.slice(0, 10)}</span>
                 <span className="ml-2 text-gray-700">{ele.status}</span>
-                {role === 'participant' && <button className='cursor-pointer bg-green-400 text-white rounded-lg px-3 py-2 ml-3'>{ele.status==='completed'?"No Opening 🚫":"Register"}</button>}
+                <>
+                  <button
+                  onClick={() => setOpenModal(true)}
+                    className={`cursor-pointer text-white rounded-lg px-3 py-2 ml-3 ${ele.status === 'completed' ? 'bg-gray-400' : 'bg-green-400'}`}
+                    disabled={ele.status === 'completed'}
+                  >
+                    {ele.status === 'completed' ? "No Opening 🚫" : "Register"}
+                  </button>
+                  <Modal className='w-fit border-2 border-solid border-red bg-green-400' show={openModal} onClose={() => setOpenModal(false)}>
+                    <Modal.Body>
+                     <RegistrationForm setOpenModal={setOpenModal} hackerthonId={ele?._id}/>
+                    </Modal.Body>
+                  </Modal>
+                </>
               </div>
             </div>
           ))}
