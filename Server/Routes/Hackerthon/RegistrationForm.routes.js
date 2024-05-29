@@ -3,6 +3,8 @@ import Registration from '../../Modals/registrationSchema.js'
 import nodemailer from 'nodemailer'
 import hackerthonSchema from '../../Modals/hackerthonSchema.js'
 import dotenv from 'dotenv';
+import registrationSchema from '../../Modals/registrationSchema.js';
+
 dotenv.config();
 
 const router = express.Router()
@@ -108,5 +110,34 @@ Best regards,<br>
 }
 
 router.post('/:hackerthonId', registrationForm)
+
+
+const registeredParticipantData = async (req, res) => {
+    const { participantEmail } = req.params;
+    let data = [];
+    
+    try {
+        const findUserRegisHackerthons = await registrationSchema.find({ participantEmail });
+        
+        if (!findUserRegisHackerthons || findUserRegisHackerthons.length === 0) {
+            return res.status(404).json({ message: "Participant not found" });
+        }
+
+        const hackerthonDetailsPromises = findUserRegisHackerthons.map(async (registration) => {
+            const hackerthonDetails = await hackerthonSchema.findById(registration.hackerthonId);
+            return hackerthonDetails;
+        });
+
+        data = await Promise.all(hackerthonDetailsPromises);
+
+        res.json({ message: "Data fetched successfully", data });
+    } catch (error) {
+        console.log("Error occurred:", error);
+        res.status(500).json({ message: "An error occurred while fetching participant data", error: error.message });
+    }
+};
+
+
+router.get("/:participantEmail",registeredParticipantData)
 
 export default router
