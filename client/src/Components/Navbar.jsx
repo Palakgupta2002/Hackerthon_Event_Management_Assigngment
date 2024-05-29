@@ -1,6 +1,15 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+    const { role, email } = useParams();
+    const navigate=useNavigate()
+   
+    const handleNavigate=()=>{
+        navigate(`/MyEvents/${email}`)
+    }
+
 
     return (
         <div>
@@ -8,7 +17,7 @@ const Navbar = () => {
                 <div>HackerThon</div>
                 <div className='flex gap-7'>
                     <div className='cursor-pointer'>Profile</div>
-                    <div className='cursor-pointer'>My Events</div>
+                   {role==="participant" &&  <div className='cursor-pointer' onClick={handleNavigate}>My Events</div>}
                     <div className='cursor-pointer'>Log Out</div>
                 </div>
             </div>
