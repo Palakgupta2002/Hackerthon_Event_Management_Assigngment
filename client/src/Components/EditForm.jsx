@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Button, Modal } from "flowbite-react";
 import { useParams } from 'react-router-dom';
 
-const CreateForm = () => {
+const EditForm = ({data}) => {
+    console.log(data,"hello")
     const { email } = useParams();
     const [openModal, setOpenModal] = useState(true);
     const [formData, setFormData] = useState({
-        name: '',
-        email: email,
-        company: '',
-        date: '',
-        description: '',
+        name: data?.name,
+        company: data?.company,
+        date: data?.date,
+        description: data?.description,
     });
 
     const handleChange = (e) => {
@@ -18,11 +18,12 @@ const CreateForm = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+
     const handleSubmit = async(e) => {
         e.preventDefault();
         try{
-            const response= await fetch("http://localhost:5000/hackerthon/createHackerthon",{
-            method:"POST",
+            const response= await fetch(`http://localhost:5000/hackerthon/updateHackerthon/${data._id}`,{
+            method:"PUT",
             headers:{
                 "Content-Type":"application/json"
             },
@@ -38,14 +39,17 @@ const CreateForm = () => {
 
         setOpenModal(false);
     };
+    const handleEdit = () => {
+        setOpenModal(true)
+      };
 
     return (
         <>
-            <Button className='text-black border-2 border-solid border-black' onClick={() => setOpenModal(true)}>Create Hackathon Event</Button>
+             <button className='cursor-pointer font-bold text-blue-500' onClick={handleEdit}>Edit</button>
             <Modal className='bg-white border-2 border-solid border-green-200 translate-3 w-fit px-8' dismissible show={openModal} onClose={() => setOpenModal(false)}>
                 <Modal.Body className='text-black flex justify-center w-full h-full'>
                     <div>
-                        <div className='font-bold text-2xl underline text-black'>Create Hackathon Event</div>
+                        <div className='font-bold text-2xl underline text-black'>Edit Hackerthon Details</div>
                         <form className='w-full bg-green-500 border-2 border-solid rounded-lg shadow-lg border-green-300 p-4' onSubmit={handleSubmit}>
                             <div>
                                 <div>
@@ -92,7 +96,7 @@ const CreateForm = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <button className='bg-green-400 text-white p-2 rounded-lg w-full mt-4 ' type='submit'>Create Event</button>
+                                <button className='bg-green-400 text-white p-2 rounded-lg w-full mt-4 ' type='submit'>Edit Form Data</button>
                                 <button onClick={() => setOpenModal(false)} className='bg-green-400 text-white p-2 rounded-lg w-full mt-4'>Close</button>
                             </div>
                         </form>
@@ -103,4 +107,4 @@ const CreateForm = () => {
     );
 };
 
-export default CreateForm;
+export default EditForm;
