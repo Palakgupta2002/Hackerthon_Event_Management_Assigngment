@@ -9,9 +9,13 @@ import cors from "cors"
 dotenv.config();
 
 
-mongoose.connect(process.env.Mongo_URL)
+
+mongoose.connect(process.env.Mongo_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
 .then(() => console.log("MongoDB is connected"))
-.catch(err => console.log(err));
+.catch(err => console.log("MongoDB connection error:", err));
 
 const app = express();
 app.use(cors())
