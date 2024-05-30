@@ -10,7 +10,7 @@ dotenv.config();
 
 
 
-mongoose.connect(process.env.Mongo_URL, {
+mongoose.connect("mongodb+srv://shanvig819:palak@cluster7.qp4t2z6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster7", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
